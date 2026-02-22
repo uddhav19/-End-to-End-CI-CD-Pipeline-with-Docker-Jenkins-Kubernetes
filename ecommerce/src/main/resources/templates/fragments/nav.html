@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4" th:href="@{/}">
+            <i class="bi bi-bag-heart-fill text-warning me-2"></i>ShopZone
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <form class="d-flex mx-auto" th:action="@{/products}" method="get" style="width:40%;">
+                <div class="input-group">
+                    <input class="form-control" type="search" name="search" placeholder="Search products...">
+                    <button class="btn btn-warning" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+            <ul class="navbar-nav ms-auto align-items-center gap-1">
+                <li class="nav-item"><a class="nav-link" th:href="@{/products}"><i class="bi bi-grid me-1"></i>Products</a></li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link position-relative" th:href="@{/cart}">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark"
+                              th:text="${cartCount}" th:if="${cartCount != null and cartCount > 0}"></span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-circle me-1"></i><span sec:authentication="name">User</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" th:href="@{/orders}"><i class="bi bi-bag me-2"></i>My Orders</a></li>
+                        <li sec:authorize="hasRole('ADMIN')"><a class="dropdown-item" th:href="@{/admin}"><i class="bi bi-speedometer2 me-2"></i>Admin Panel</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post" class="d-inline">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button class="dropdown-item text-danger" type="submit"><i class="bi bi-box-arrow-right me-2"></i>Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="btn btn-outline-light btn-sm me-1" th:href="@{/login}">Login</a>
+                    <a class="btn btn-warning btn-sm" th:href="@{/register}">Register</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div th:fragment="alerts">
+    <div class="container mt-3" th:if="${success != null or error != null or message != null}">
+        <div class="alert alert-success alert-dismissible fade show" th:if="${success}">
+            <i class="bi bi-check-circle-fill me-2"></i><span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div class="alert alert-danger alert-dismissible fade show" th:if="${error}">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i><span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div class="alert alert-info alert-dismissible fade show" th:if="${message}">
+            <i class="bi bi-info-circle-fill me-2"></i><span th:text="${message}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+</div>
+
+<footer th:fragment="footer" class="bg-dark text-light py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h5 class="fw-bold"><i class="bi bi-bag-heart-fill text-warning me-2"></i>ShopZone</h5>
+                <p class="text-muted small">Your one-stop shop for everything you need.</p>
+            </div>
+            <div class="col-md-4">
+                <h6 class="fw-bold">Quick Links</h6>
+                <ul class="list-unstyled small">
+                    <li><a class="text-muted text-decoration-none" th:href="@{/}">Home</a></li>
+                    <li><a class="text-muted text-decoration-none" th:href="@{/products}">Products</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h6 class="fw-bold">Contact</h6>
+                <p class="text-muted small mb-0"><i class="bi bi-envelope me-1"></i> support@shopzone.com</p>
+                <p class="text-muted small"><i class="bi bi-telephone me-1"></i> +1 (555) 123-4567</p>
+            </div>
+        </div>
+        <hr class="border-secondary">
+        <p class="text-center text-muted small mb-0">© 2024 ShopZone. Built with Spring Boot.</p>
+    </div>
+</footer>
+</body>
+</html>
