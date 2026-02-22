@@ -43,7 +43,7 @@ ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}|g' deployments.yml"
         } 
         stage('k8s depoyment') { 
             steps { 
-                sh 'kubectl apply -f k8s/deployments.yml'
+                sh 'kubectl apply -f k8s/deployments.yaml'
                 sh 'kubectl apply -f k8s/service.yml'
             } 
         } 
