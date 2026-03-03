@@ -14,11 +14,6 @@ pipeline {
                 git 'https://github.com/uddhav19/myweb_cicd_project.git' 
             } 
         } 
-        stage('maven build'){ 
-            steps { 
-                sh 'mvn clean package' 
-            } 
-        } 
         stage('docker image build'){ 
             steps { 
                 sh 'docker build -t ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG} .' 
