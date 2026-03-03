@@ -19,7 +19,6 @@ Developer → GitHub Push
                 ▼
           Jenkins (EC2)
           ├── Pull Code (Git)
-          ├── Build Artifact (Maven)
           ├── Build Docker Image
           ├── Push to DockerHub
           └── Deploy to EKS (kubectl)
